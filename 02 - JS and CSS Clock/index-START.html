@@ -71,6 +71,7 @@
 
   </style>
 
+
   <script>
 
     const secondHand = document.querySelector('.second-hand')
@@ -83,7 +84,7 @@
       const secondsDeg = ((seconds/60) * 360) + 90;
       secondHand.style.transform = `rotate(${secondsDeg}deg)`
 	  if(secondsDeg === 444 || 90){
-		secondHand.style.transition = '';}	
+		secondHand.style.transition = 'all 0s';}	
 
       const minutes = now.getMinutes();
       const minutesDeg = ((minutes/60) * 360) + 90;

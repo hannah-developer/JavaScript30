@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JS + CSS Clock</title>
+</head>
+<body>
+
+	<div class = "container">
+
+	</div>
+
+
+  <style>
+    html {
+      background: #018DED url(https://unsplash.it/1500/1000?image=881&blur=5);
+      background-size: cover;
+      font-family: 'helvetica neue';
+      text-align: center;
+      font-size: 10px;
+    }
+
+    body {
+      margin: 0;
+      font-size: 2rem;
+      display: flex;
+      flex: 1;
+      min-height: 100vh;
+      align-items: center;
+    }
+
+    .clock {
+      width: 30rem;
+      height: 30rem;
+      border: 20px solid white;
+      border-radius: 50%;
+      margin: 50px auto;
+      position: relative;
+      padding: 2rem;
+      box-shadow:
+        0 0 0 4px rgba(0,0,0,0.1),
+        inset 0 0 0 3px #EFEFEF,
+        inset 0 0 10px black,
+        0 0 10px rgba(0,0,0,0.2);
+    }
+
+    .clock-face {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform: translateY(-3px); /* account for the height of the clock hands */
+    }
+
+    .hand {
+      width: 50%;
+      height: 6px;
+      background: black;
+      position: absolute;
+      top: 50%;
+      transform-origin: 100%;
+      transform: rotate(90deg);
+      transition: all 0.05s;
+      transition-timing-function: cubic-bezier(0.1, 2.5, 0.5, 1);
+
+    }
+
+  </style>
+
+  <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+  <script type = "text/babel">
+
+    // const secondHand = document.querySelector('.second-hand')
+    // const minutesHand = document.querySelector('.min-hand')
+    // const hoursHand = document.querySelector('.hour-hand')
+
+
+    // function setDate(){
+    //   const now = new Date();
+    //   const seconds = now.getSeconds();
+    //   const secondsDeg = ((seconds/60) * 360) + 90;
+    //   secondHand.style.transform = `rotate(${secondsDeg}deg)`
+	//   if(secondsDeg === 444 || 90){
+	// 	secondHand.style.transition = 'all 0s';}	
+
+    //   const minutes = now.getMinutes();
+    //   const minutesDeg = ((minutes/60) * 360) + 90;
+    //   minutesHand.style.transform = `rotate(${minutesDeg}deg)`
+    //   //console.log(seconds)
+
+    //   const hours = now.getHours();
+    //   const hoursDeg = ((hours/12) * 360) + 90;
+    //   hoursHand.style.transform = `rotate(${hoursDeg}deg)`
+	// }
+    // setInterval(setDate, 1000)
+	
+
+
+	function Clock(){
+
+		const [time, setTime] = React.useState(new Date())
+
+
+			function setDate(){
+				//time = new Date() === setTime(new Date())
+				setTime(new Date())
+			}
+
+			const seconds = time.getSeconds();
+			const secondsDeg = ((seconds/60) * 360) + 90;
+			
+			const minutes = time.getMinutes();
+			const minutesDeg = ((minutes/60) * 360) + 90;
+
+			const hours = time.getHours();
+			const hoursDeg = ((hours/12) * 360) + 90;
+	
+			React.useEffect (()=> {
+				setInterval(setDate, 1000)	
+			}, [])
+			//[] = 처음렌더링시 1번만 호출하라는 기호 
+
+
+			const timeInfo = [
+				{className: 'hour-hand', deg: hoursDeg},
+				{className: 'min-hand', deg: minutesDeg},
+				{className: 'second-hand', deg: secondsDeg}
+			]
+
+		return(
+			<div className="clock">
+			<div className="clock-face">
+
+				{timeInfo.map((data, i)=>
+					<div key = {i} className={`hand ${data.className}`}
+					style = {{
+						transform : `rotate(${data.deg}deg)`,
+						transition: data.deg === 444 || data.deg === 90 ? 'all 0s': 'all 0.05s'
+					}}></div>)}
+
+			</div>
+			</div>
+		)
+
+	}
+	ReactDOM.render(<Clock />, document.querySelector('.container'))
+
+  </script>
+</body>
+</html>
