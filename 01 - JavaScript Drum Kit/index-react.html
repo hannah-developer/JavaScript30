@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <link href = "./style.css" rel = 'stylesheet'>
+    <title>Document</title>
+</head>
+<body>
+    <div id="root">
+    </div>
+    <script type = "text/babel">
+        function App(){
+            const { useState } = React
+            const [data] = useState([
+                    { code: 65, name: "A", sound: "clap" },
+                    { code: 83, name: "S", sound: "hihat" },
+                    { code: 68, name: "D", sound: "kick" },
+                    { code: 70, name: "F", sound: "openhat" },
+                    { code: 71, name: "G", sound: "boom" },
+                    { code: 72, name: "H", sound: "ride" },
+                    { code: 74, name: "J", sound: "snare" },
+                    { code: 75, name: "K", sound: "tom" },
+                    { code: 76, name: "L", sound: "tink" },
+                ])
+
+            const removeClass = ({target}) =>{
+                target.classList.remove('playing')
+            }
+            const keyList = data.map((element, i) =>
+                                <div key={i} data-key={element.code} className="key"
+                                     onTransitionEnd = {removeClass}>
+                                <kbd>{element.name}</kbd>
+                                <span className="sound">{element.sound}</span>
+                                <audio data-key={element.code} src={`sounds/${element.sound}.wav`}></audio>
+                                </div>)
+
+            window.addEventListener('keydown', (e)=>{
+            let element = document.querySelector(`[data-key="${e.keyCode}"]`)
+            let sound = document.querySelector(`audio[data-key="${e.keyCode}"]`)
+            if(!element){return;}
+                element.classList.add('playing')
+                sound.currentTime = 0;
+                sound.play();
+            })
+
+            return (
+                <div className="keys">
+                    {keyList}
+                </div>
+            )
+        }
+        ReactDOM.render(<App />, document.getElementById('root'))
+        //root div에 붙여주는 코드
+    </script>
+</body>
+</html>
