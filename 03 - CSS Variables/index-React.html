@@ -5,7 +5,7 @@
   <title>Scoped CSS Variables and JS</title>
 </head>
 <body>
-  <h2>Update CSS Variables with <span class='hl'>JS</span></h2>
+ 
 
   <div class='wrapper'>
 
@@ -40,6 +40,7 @@
 		background-color: #ffc600;
 	}
 
+
   </style>
 
 	<script src="https://unpkg.com/@babel/standalone/babel.js"></script>
@@ -48,38 +49,17 @@
 
   <script type="text/babel">
 
-    // const body = document.querySelector('body')
-    // const blur = document.querySelector('#blur')
-    // const spacing = document.querySelector('#spacing')
-    // const base = document.querySelector('#base')
-    const img = document.querySelector('img')
-
-
-
 	function App(){
 
-		// const paddingChange = function(value){
-		// 	img.style.padding = `${value}px`
-		// }
+        const [styleChange, setStyleChange] = React.useState({
+                spacing: '10',
+                filter: '10',
+                background: '#ffc600'
+            })
 
-		// const blurChange = function(value){
-		// 	img.style.filter = `blur(${value}px)`
-        // }
-        
-
-
-
-	const [styleChange, setStyleChange] = React.useState({
-            spacing: '10',
-            filter: '10',
-            background: '#ffc600'
-        })
-	// const [blur, setBlur] = React.useState(['10'])
-	// const [base, setBase] = React.useState(['#ffc600'])
-        
-    
         const changeValue = (e) =>{
-
+            setStyleChange({ [e.target.id] : `${e.target.value}`})
+            {/*
             if(e.target.id === 'spacing'){
                 setStyleChange({spacing: `${e.target.value}px`})
             }
@@ -89,33 +69,29 @@
             else if(e.target.id === 'base'){
                 setStyleChange({background: `${e.target.value}`})
             }
-    
-    }
-
-
-
+        */}
+        }
 
 		return(
-		   	<>
+           <>
+            <h2>Update CSS Variables with <span className='hl' style = {{color:`${styleChange.background}`}}>JS</span></h2>
 			<div className="controls">
 				<label htmlFor="spacing">Spacing:</label>
 				<input id="spacing"
 						type="range" name="spacing" min="10" max="200" defaultValue="10" data-sizing="px" onChange = {changeValue}/>
 
 				<label htmlFor="blur">Blur:</label>
-				<input id="blur" type="range" name="blur" min="0" max="25" defaultValue="10" data-sizing="px" onChange = {changeValue}/>
+				<input id="filter" type="range" name="blur" min="0" max="25" defaultValue="10" data-sizing="px" onChange = {changeValue}/>
 
 				<label htmlFor="base">Base Color</label>
-				<input id="base" type="color" name="base" defaultValue="#ffc600" onChange = {changeValue}/>
+				<input id="background" type="color" name="base" defaultValue="#ffc600" onChange = {changeValue}/>
 			</div>
 			<img src="https://source.unsplash.com/7bwQXzbF6KE/800x500"
-				style = {{padding: `${styleChange.spacing}`,
-                          filter: `blur(${styleChange.filter})`,
+				style = {{padding: `${styleChange.spacing}` + "px",
+                          filter: `blur(${styleChange.filter}px)`,
                           background: `${styleChange.background}`}}/>
 			</>
 		)
-
-
 		}
 
 	ReactDOM.render(<App />, document.querySelector('.wrapper'));
